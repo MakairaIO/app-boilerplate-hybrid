@@ -22,9 +22,9 @@
 
 ### frontend
 node_modules
-.parcel-cache
-public/js/app.js
-public/js/app.js.map
+.next
+next-env.d.ts
+cache
 
 ### data from mysql container
 data

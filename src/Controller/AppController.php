@@ -17,68 +17,6 @@ class AppController extends AbstractController
     {
     }
 
-    #[Route('/request', name: 'app_request', methods: ['POST'])]
-    public function request(Request $request, MailerInterface $mailer): Response
-    {
-        $recipient = $_ENV['MAILER_RECIPIENT'];
-        $email     = $request->request->get('email');
-        $name      = $request->request->get('name');
-        $message   = trim($request->request->get('message'));
-        $feedUrl   = $request->request->get('feed');
-        $domain    = $request->query->get("domain") ?? '';
-
-        $body = "
-Neue Anfrage von: $name (Domain: $domain).
-
-Email: $email
-
-Feed: $feedUrl
-
-Nachricht:
-$message
-";
-
-        $body = trim($body);
-
-        try {
-            $email = (new Email())->from('quickstart@makaira.io')
-                ->to($recipient)
-                ->subject('Makaira Quickstart - Neue Anfrage')
-                ->text($body);
-
-            $mailer->send($email);
-        } catch (TransportExceptionInterface $e) {
-            // TODO: Handle exception - maybe log it?
-            return $this->render('app/index.html.twig', [
-                'state' => 'There was an error sending your request. Please try again later or contact hello@makaira.io directly..',
-            ]);
-        }
-
-        return $this->render('app/index.html.twig', [
-            'state' => 'Thank you for your request. We will get back to you as soon as possible.',
-        ]);
-    }
-
-    #[Route('/test', name: 'app_test')]
-    public function test(Request $request): Response
-    {
-        /**
-         * 1. Read public/js/quickstart.js
-         * 2. Replace the values in the "data-makaira" attribute with the values from the query string
-         * 3. Return the quickstart.js file with the updated values
-         */
-        $domain   = $request->query->get("domain") ?? '';
-        $instance = $request->query->get("instance") ?? '';
-
-        $content = file_get_contents(__DIR__ . '/../../public/js/quickstart.js');
-        $content = str_replace('{{domain}}', $domain, $content);
-        $content = str_replace('{{instance}}', $instance, $content);
-
-        return new Response($content, 200, [
-            'Content-Type' => 'application/javascript',
-        ]);
-    }
-
     #[Route('/', name: 'app_app')]
     public function index(Request $request): Response
     {
