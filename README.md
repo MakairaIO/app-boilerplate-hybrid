@@ -4,13 +4,13 @@
 Contains custom authenticator for authorizing requests based on an HMAC as query parameter, as well as some basic makaira-like styling.
 
 
-### Requirements
+## Requirements
 
 - PHP 8+
 - Composer 2+
 - [Symfony CLI](https://symfony.com/download)
 
-### Local Setup
+## Local Setup
 
 1. Run `composer install`
 
@@ -33,6 +33,23 @@ insert into app_info(makaira_domain, makaira_instance, app_slug, app_secret, app
 7. Start Local development
 8. You can access with url: http://localhost:8000/?hmac=a6cb894d51b1d33bf8376d2d9455436ec9739acaa79ccf94c720decd9c47c217&nonce=123456&domain=demo.makaira.io&instance=storefront
 
-### Additional Resources
+### Development Note
+- All api handled by symfony server <strong>MUST</strong> be under ``/api`` path. The remaining request will be handled by nextjs
+- For more information, please take a look at ``Procfile`` and ``nginx_app.conf`` file to know how the requests handling
+## Heroku Setup
+1. Open heorku dashboard
+2. Navigate to Settings tab
+3. In a Buildpacks section, let add 2 build packs in order to support build process for nextjs and symfony:
+  ```
+  heroku/nodejs
+  heroku/php
+  ```
+4. Add Environment
+  ```
+  APP_ENV=production
+  NODE_ENV=production
+  ```
+
+## Additional Resources
 - https://docs.makaira.io/docs/apps
 - https://docs.makaira.io/docs/content-widgets
