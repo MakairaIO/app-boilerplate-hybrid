@@ -10,7 +10,7 @@
   "scripts": {
     "dev": "next dev ./scripts",
     "build": "next build ./scripts",
-    "start": "next start ./scripts",
+    "start": "next start ./scripts -p 3000",
     "lint": "next lint --fix ./scripts",
     "dev:server": "symfony server:start --port=8000"
   },
