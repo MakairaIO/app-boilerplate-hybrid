@@ -3,6 +3,7 @@ import csx from 'classnames'
 import styles from '@/components/Radio/Radio.module.scss'
 
 type RadioProps = {
+  id?: string;
   label?: string;
   value?: string;
   disabled?: boolean;
@@ -14,6 +15,7 @@ type RadioProps = {
 };
 
 type LabelProps = {
+  id?: string;
   disabled?: boolean;
   size?: 'small' | 'medium' | 'large';
   direction?: 'horizontal' | 'vertical';
@@ -29,6 +31,9 @@ export type GroupProps = {
   onChange?: (value: string) => void;
   value?: string;
   children?: React.ReactNode;
+  error?: {
+    message: string
+  }
 };
 
 const RadioContext = React.createContext<{
@@ -91,6 +96,7 @@ const Radio: FC<RadioProps> = ({
 };
 
 const Label: FC<LabelProps> = ({
+  id,
   disabled,
   size,
   direction,
@@ -104,10 +110,20 @@ const Label: FC<LabelProps> = ({
 
   return (
     <label
-      className={csx(styles['radio-button'], styles['radio-button'], styles[`radio-button--${size}`], { [styles[`radio-button--${direction}`]]: disabled }, wrapperClassName)}
+      className={csx(
+        styles['radio-button'], 
+        styles['radio-button'], 
+        styles[`radio-button--${size}`], 
+        { 
+          [styles[`radio-button--${direction}`]]: disabled 
+        }, 
+        wrapperClassName
+      )}
+      htmlFor={id}
       {...rest}
     >
       <input
+        id={id}
         type="radio"
         disabled={disabled}
         checked={selectedValue ? selectedValue === value : undefined}
@@ -120,10 +136,17 @@ const Label: FC<LabelProps> = ({
   );
 };
 
-const RadioGroup: FC<GroupProps> = ({ onChange, value, children }) => {
+const RadioGroup: FC<GroupProps> = ({ onChange, value, children, error}) => {
   return (
     <RadioContext.Provider value={{ onChange, value }}>
       {children}
+      {error && (
+        <div
+          className={csx(styles.message, styles.error)}
+        >
+          {error.message}
+        </div>
+      )}
     </RadioContext.Provider>
   );
 };

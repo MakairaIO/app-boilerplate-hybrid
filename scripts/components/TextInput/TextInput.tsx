@@ -4,6 +4,7 @@ import React, {
   FocusEventHandler,
   FunctionComponent,
 } from 'react'
+import classNames from 'classnames'
 
 import styles from '@/components/TextInput/TextInput.module.scss'
 
@@ -17,6 +18,9 @@ interface TextInputProps {
   error?: {
     message: string
   }
+  className?: string;
+  type?: string
+  style?: React.CSSProperties,
 }
 
 const TextInput: FunctionComponent<TextInputProps> = ({
@@ -27,9 +31,12 @@ const TextInput: FunctionComponent<TextInputProps> = ({
   defaultValue,
   description,
   error,
+  className,
+  type = 'text',
+  style
 }) => {
   return (
-    <div className={styles.textInput}>
+    <div className={classNames(className, 'text-input', styles.textInput)} style={style}>
       {label && (
         <label className={styles.textInputLabel} htmlFor={name}>
           {label}

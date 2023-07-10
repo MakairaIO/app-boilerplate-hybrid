@@ -14,7 +14,10 @@ type NumberInputProps = {
   value: number;
   disabled?: boolean;
   className?: string;
-  style?: React.CSSProperties
+  style?: React.CSSProperties,
+  error?: {
+    message: string
+  }
 }
 
 const NumberInput: React.FC<NumberInputProps> = (props) => {
@@ -28,6 +31,7 @@ const NumberInput: React.FC<NumberInputProps> = (props) => {
     disabled,
     className,
     style,
+    error
   } = props
 
   function handleChange(newValue: number) {
@@ -63,7 +67,7 @@ const NumberInput: React.FC<NumberInputProps> = (props) => {
   return (
     <div className={classNames("number-input", styles.numberInput, className)} style={style}>
       {label && (
-        <Text element="div" className={styles.label}>
+        <Text element="div" className={classNames('label', styles.label)}>
           {label}
         </Text>
       )}
@@ -93,6 +97,13 @@ const NumberInput: React.FC<NumberInputProps> = (props) => {
       </div>
       {description && (
         <div className={styles.message}>{description}</div>
+      )}
+      {error && (
+        <div
+          className={classNames(styles.message, styles.error)}
+        >
+          {error.message}
+        </div>
       )}
     </div>
   )

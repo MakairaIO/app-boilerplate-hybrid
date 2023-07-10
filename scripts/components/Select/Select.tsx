@@ -60,7 +60,7 @@ const Select: React.FC<SelectProps> = ({
   dropdownRender,
   ...rest
 }) => {
-  const classNames = csx(styles.wrapper, className, {
+  const classNames = csx(styles.wrapper, className, 'select', {
     [styles.borderless]: borderless || size === 'large',
     [styles.error]: error,
     [styles.large]: size === 'large',
@@ -68,7 +68,7 @@ const Select: React.FC<SelectProps> = ({
 
   return (
     <div className={classNames}>
-      {title && <div className={styles.label}>{title}</div>}
+      {title && <div className={csx('label', styles.label)}>{title}</div>}
       <RcSelect
         inputIcon={() => <TfiAngleDown />}
         clearIcon={() => <TfiClose />}
