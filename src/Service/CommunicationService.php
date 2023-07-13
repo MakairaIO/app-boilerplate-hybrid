@@ -3,7 +3,6 @@
 namespace App\Service;
 
 use Exception;
-use App\Entity\AppInfo;
 use App\Repository\AppInfoRepository;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
@@ -30,9 +29,9 @@ class CommunicationService
      * @param $makairaHmac string Hash that was received from the Makaira-Iframe-URL
      * @return string
      */
-    public function getHMAC(string $instance, string $domain, string $makairaHmac): string
+    public function getHMAC(string $instance, string $domain, string $makairaHmac, string $slug): string
     {
-        $appInfo = $this->appInfoRepository->findOneByDomainAndInstance($domain, $instance);
+        $appInfo = $this->appInfoRepository->findOneByDomainAndInstanceAndSlug($domain, $instance, $slug);
         $appSecret = $appInfo ? $appInfo->getAppSecret() : '';
 
         return hash_hmac(
