@@ -39,30 +39,16 @@ class AppInfoRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return AppInfo[] Returns an array of AppInfo objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('a')
-//            ->andWhere('a.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('a.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-   public function findOneByDomainAndInstance(string $domain, string $instance): ?AppInfo
-   {
-       return $this->createQueryBuilder('a')
-           ->andWhere('a.makairaDomain = :val1')
-           ->andWhere('a.makairaInstance = :val2')
-           ->setParameter('val1', $domain)
-           ->setParameter('val2', $instance)
-           ->getQuery()
-           ->getOneOrNullResult()
-       ;
-   }
+    public function findOneByDomainAndInstanceAndSlug(string $domain, string $instance, string $slug): ?AppInfo
+    {
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.makairaDomain = :val1')
+            ->andWhere('a.makairaInstance = :val2')
+            ->andWhere('a.appSlug = :val3')
+            ->setParameter('val1', $domain)
+            ->setParameter('val2', $instance)
+            ->setParameter('val3', $slug)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }

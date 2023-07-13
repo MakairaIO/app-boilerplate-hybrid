@@ -54,13 +54,15 @@ class SignedRequestAuthenticator extends AbstractAuthenticator
         $domain = $request->query->get("domain");
         $instance = $request->query->get("instance");
         $hmac = $request->query->get("hmac");
+        $slug = $request->query->get("slug");
+
 
         if (null === $nonce || null === $domain || null === $instance || null === $hmac) {
             throw new AuthenticationException();
         }
 
-        $appInfo = $this->appInfoRepository->findOneByDomainAndInstance($domain, $instance);
-        
+        $appInfo = $this->appInfoRepository->findOneByDomainAndInstanceAndSlug($domain, $instance, $slug);
+
         if (!$appInfo) {
             throw new AuthenticationException();
         }
@@ -72,10 +74,10 @@ class SignedRequestAuthenticator extends AbstractAuthenticator
         );
 
         return new Passport(new UserBadge("signed_request"), new CustomCredentials(
-           function ($credentials) {
-               return $credentials[0] === $credentials[1];
-           },
-           [$expected, $hmac]
+            function ($credentials) {
+                return $credentials[0] === $credentials[1];
+            },
+            [$expected, $hmac]
         ));
     }
 
