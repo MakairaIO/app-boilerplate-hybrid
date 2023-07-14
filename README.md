@@ -36,6 +36,7 @@ insert into app_info(makaira_domain, makaira_instance, app_slug, app_secret, app
 ### Development Note
 - All api handled by symfony server <strong>MUST</strong> be under ``/api`` path. The remaining request will be handled by nextjs
 - For more information, please take a look at ``Procfile`` and ``nginx_app.conf`` file to know how the requests handling
+- For App serve only for 1 client 1 instance, we support wrap page ``getServerSideProps`` with ``withMakaira`` . It will read Environment then generate HMAC token instead of call query to php server
 ## Heroku Setup
 1. Open heorku dashboard
 2. Navigate to Settings tab
