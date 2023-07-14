@@ -76,4 +76,4 @@ export default function Home() {
   )
 }
 
-// export const getServerSideProps = withMakaira()
+export const getServerSideProps = withMakaira()
