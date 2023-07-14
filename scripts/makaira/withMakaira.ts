@@ -1,7 +1,8 @@
+import { APP_TYPE } from '@/types/App'
+import { getAppTypeFromPath } from '@/utils/getAppTypeFromPath'
 import * as crypto from 'crypto'
 
 import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next'
-import { CONTENT_WIDGET_PATHS } from '@/utils/contentWidgetPaths'
 
 type MakairaAuthData = {
   // New generated HMAC which is used to receive the JWT-token from the Makaira Admin UI
@@ -14,6 +15,9 @@ type MakairaAuthData = {
   instance: string
   // HMAC that was received from the Makaira Admin UI
   makairaHmac: string | null
+
+  // read from ENVIRONMENT
+  slug: string
 }
 
 type ExpectedQueryParams = {
@@ -27,6 +31,14 @@ type IncomingPageServerSideProp<P> = (
   ctx: GetServerSidePropsContext
 ) => Promise<GetServerSidePropsResult<P>>
 
+
+/**
+ * Using for APP with install in single Makaira's instance and 
+ * provided SECRET, SLUG via Environment instead of store in db
+ * 
+ * @param incomingGSSP 
+ * @returns 
+ */
 export function withMakaira<T>(
   incomingGSSP?: IncomingPageServerSideProp<T> | null
 ) {
@@ -37,9 +49,26 @@ export function withMakaira<T>(
 
     const url = new URL(ctx.req.url ?? '', `https://${ctx.req.headers.host}`)
 
-    const secret = CONTENT_WIDGET_PATHS.includes(url.pathname)
-      ? process.env.MAKAIRA_APP_SECRET_CONTENT_WIDGET
-      : process.env.MAKAIRA_APP_SECRET
+    const appType = getAppTypeFromPath(url.pathname)
+    let secret = null, slug = null;
+    switch (appType) {
+      case APP_TYPE.CONTENT_WIDGET:
+        secret = process.env.MAKAIRA_APP_SECRET_CONTENT_WIDGET
+        slug = process.env.MAKAIRA_APP_SLUG_CONTENT_WIDGET
+        break;
+      case APP_TYPE.CONTENT_MODAL:
+        secret = process.env.MAKAIRA_APP_SECRET_CONTENT_MODAL
+        slug = process.env.MAKAIRA_APP_SLUG_CONTENT_MODAL
+        break;
+      default:
+        secret = process.env.MAKAIRA_APP_SECRET
+        slug = process.env.MAKAIRA_APP_SLUG
+        break;
+    }
+
+    if (!secret || !slug) {
+      throw Error('[Example App] Environment for Single App were not set')
+    }
 
     // At first, we need to check if the page was requested from the Makaira Admin UI.
     // The UI sends an HMAC and a Nonce which we can use together with our app secret
@@ -78,6 +107,7 @@ export function withMakaira<T>(
       nonce: tokenNonce,
       instance: instance ?? process.env.DEV_INSTANCE ?? '',
       domain: domain ?? process.env.DEV_DOMAIN ?? '',
+      slug: slug ?? '',
     }
 
     if (incomingGSSP) {
