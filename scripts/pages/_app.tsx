@@ -5,6 +5,7 @@ import { QueryClientProvider } from '@tanstack/react-query'
 
 import { CONTENT_WIDGET_PATHS } from '@/utils/contentWidgetPaths'
 import { MakairaAppProvider } from '@/makaira/MakairaAppProvider'
+import { MakairaConfigProvider } from '@/makaira/MakairaConfigProvider'
 
 import '@/styles/mixins.scss'
 import '@/styles/globals.scss'
@@ -20,7 +21,9 @@ export default function App({ Component, pageProps }: AppProps) {
     <main>
       <QueryClientProvider client={queryClient}>
         <MakairaAppProvider {...pageProps} appType={appType}>
-          <Component {...pageProps} />
+          <MakairaConfigProvider>
+            <Component {...pageProps} />
+          </MakairaConfigProvider>
         </MakairaAppProvider>
       </QueryClientProvider>
     </main>
