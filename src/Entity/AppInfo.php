@@ -77,4 +77,11 @@ class AppInfo
 
         return $this;
     }
+
+    public function getSubDomain(): ?string
+    {
+        $makairaDomain = $this->getMakairaDomain();
+        return explode('.', $makairaDomain)[0];
+    }
+
 }
