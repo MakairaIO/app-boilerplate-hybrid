@@ -19,7 +19,9 @@ export interface SelectProps extends RcSelectProps {
   size?: 'normal' | 'large'
   title?: string
   description?: string
-  error?: boolean
+  error?: {
+    message: string
+  }
   options?: SelectOption[]
   groupOptions?: {
     label?: string
@@ -105,14 +107,24 @@ const Select: React.FC<SelectProps> = ({
           ))}
       </RcSelect>
 
-      {(description || error) && (
+      {description  && (
         <Text
           element="p"
           weight="book"
           size="bravo"
           className={styles.message}
         >
-          {description || error}
+          {description}
+        </Text>
+      )}
+      { error && (
+        <Text
+          element="p"
+          weight="book"
+          size="bravo"
+          className={csx(styles.message, styles.errorMessage)}
+        >
+          {error.message}
         </Text>
       )}
     </div>

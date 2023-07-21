@@ -95,7 +95,7 @@ export const RichTextInput: FC<RichTextInputProps> = (props) => {
     <div
       onFocus={onFocus}
       onClick={onFocus}
-      className={classNames(styles['rich-text'], className)}
+      className={classNames("rich-text", styles['rich-text'], className)}
     >
       {label && <div className={styles["rich-text__label"]}>{label}</div>}
       {

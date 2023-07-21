@@ -19,6 +19,14 @@
         position: absolute;
         opacity: 0.4;
       }
+
+      .rc-select-selection-search {
+        display: none;
+      }
+
+      &.rc-select-show-search .rc-select-selection-search {
+        display: block
+      }
     }
 
     .rc-select-selector {
@@ -183,7 +191,7 @@
 
 .error {
   .label,
-  .message {
+  .errorMessage {
     color: var(--brand-coral) !important;
   }
   :global {

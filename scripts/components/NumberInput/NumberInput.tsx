@@ -87,10 +87,10 @@ const NumberInput: React.FC<NumberInputProps> = (props) => {
             [styles.controlPanelDisabled]: props.disabled,
           })}
         >
-          <button className={styles.button} onClick={handleChangeUp}>
+          <button type='button' className={styles.button} onClick={handleChangeUp}>
             <FaAngleUp width={16} height={16} className={styles.buttonIcon} />
           </button>
-          <button className={styles.button} onClick={handleChangeDown}>
+          <button type='button' className={styles.button} onClick={handleChangeDown}>
             <FaAngleDown width={16} height={16} className={styles.buttonIcon} />
           </button>
         </div>

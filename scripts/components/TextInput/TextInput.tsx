@@ -12,8 +12,11 @@ interface TextInputProps {
   label?: string
   defaultValue?: string
   description?: string
+  placeholder?: string;
   onChange?: ChangeEventHandler<HTMLInputElement>
   onBlur?: FocusEventHandler<HTMLInputElement>
+  onFocus?: FocusEventHandler<HTMLInputElement>
+  onKeyUp?: (e: any) => void
   name: string
   error?: {
     message: string
@@ -26,13 +29,15 @@ interface TextInputProps {
 const TextInput: FunctionComponent<TextInputProps> = ({
   onChange,
   onBlur,
+  onFocus,
+  onKeyUp,
   name,
   label,
   defaultValue,
   description,
   error,
   className,
-  type = 'text',
+  placeholder,
   style
 }) => {
   return (
@@ -44,7 +49,7 @@ const TextInput: FunctionComponent<TextInputProps> = ({
       )}
 
       <div className={styles.textInputWrapper}>
-        <input onChange={onChange} onBlur={onBlur} name={name} />
+        <input type='text' defaultValue={defaultValue} onChange={onChange} onBlur={onBlur} name={name} onFocus={onFocus} onKeyUp={onKeyUp} placeholder={placeholder}/>
       </div>
 
       {description && (
