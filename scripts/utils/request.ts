@@ -8,7 +8,7 @@ interface RequestOption {
 const buildRequestUrl = (path: string, query?: Record<string, any>): string => {
   const q = buildURLQuery(query || {});
   path += `?${q}`
-  return path;
+  return process.env.NEXT_PUBLIC_APP_DOMAIN + path;
 };
 
 const buildHeaders = (options: RequestOption): Record<string, any> => {
@@ -69,22 +69,19 @@ export const request = async (path: string, option: RequestOption): Promise<any>
   }
 };
 
-export const requestWithMakaira = (path: string, option?: RequestOption): Promise<any> => {
+export const requestWithMakaira = (path: string, params: Record<string, any>, option?: RequestOption ): Promise<any> => {
+  const { hmac, nonce, domain, instance, slug, appType } = params
 
-  if(typeof window === undefined) {
-    throw {error: 'Not in client side!'}
-  }
-  const params = new URLSearchParams(window.location.search);
   return request(path, {
     ...option,
     query: {
       ...option?.query,
-      hmac: params.get('hmac'),
-      nonce: params.get('nonce'),
-      domain: params.get('domain'),
-      instance: params.get('instance'),
-      slug: params.get('slug'),
-      appType: params.get('appType'),
+      hmac,
+      nonce,
+      domain,
+      instance,
+      slug,
+      appType,
     }
   })
 }
