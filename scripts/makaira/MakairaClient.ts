@@ -28,11 +28,7 @@ class MakairaClient {
 
     let url = process.env.NEXT_PUBLIC_CUSTOM_MAKAIRA_DOMAIN
       ? `https://${process.env.NEXT_PUBLIC_CUSTOM_MAKAIRA_DOMAIN}/${path}`
-      : `https://${this.domain}.makaira.io/${path}`
-
-    if (process.env.NODE_ENV !== 'production' && this.domain === 'makaira.vm') {
-      url = `https://${this.domain}/${path}`
-    }
+      : `https://${this.domain}/${path}`
 
     const headers = new Headers()
     headers.append('x-makaira-instance', this.instance)
