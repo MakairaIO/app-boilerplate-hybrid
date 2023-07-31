@@ -50,6 +50,7 @@ import {
   Modal,
   ShadowScroll,
   TextInput,
+  ActionLayer,
 } from '@/components'
 import React, { useState } from 'react'
 import { withMakaira } from '@/makaira/withMakaira'
@@ -65,6 +66,7 @@ export default function Example() {
     hex: '#b65454',
   })
   const [open, setOpen] = useState(false)
+  const [showActionLayer, setShowActionLayer] = useState(false)
 
   const onChange = (key: React.Key | React.Key[]) => {
     setValue(`${key}`)
@@ -820,6 +822,15 @@ export default function Example() {
             <ModalBody />
           </Modal>
         </div>
+      </PageWrapper>
+      
+      <PageWrapper
+        title="Action Layer"
+        prefix="You are looking at"
+        suffix="from Makaira library"
+      >
+      <ActionLayer show={showActionLayer}/>
+      <Button onClick={() => setShowActionLayer(p => !p)}>Toggle Action Layer</Button>
       </PageWrapper>
     </>
   )
