@@ -56,6 +56,7 @@ import React, { useState } from 'react'
 import { withMakaira } from '@/makaira/withMakaira'
 import Pagination from '@/components/Pagination/Pagination'
 import NumberInput from '@/components/NumberInput/NumberInput'
+import DatetimePicker from '@/components/DatetimePicker/DatetimePicker'
 
 export default function Example() {
   const [value, setValue] = useState('0')
@@ -381,6 +382,18 @@ export default function Example() {
             value={color}
             description="This area is covered in mud! Be aware of crossing snakes."
           />
+        </div>
+        <div style={{ marginTop: '20px' }}>
+          <DatetimePicker label='Datetime Picker'/>
+        </div>
+        <div style={{ marginTop: '20px' }}>
+          <DatetimePicker label='Datetime Picker disabled' disabled />
+        </div>
+        <div style={{ marginTop: '20px' }}>
+          <DatetimePicker label='Datetime Picker' description='Description'/>
+        </div>
+        <div style={{ marginTop: '20px' }}>
+          <DatetimePicker label='Datetime Picker' description='Description' error={{ message: 'Error message'}}/>
         </div>
       </PageWrapper>
       <PageWrapper
