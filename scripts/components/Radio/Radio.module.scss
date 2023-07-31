@@ -1,5 +1,12 @@
 @import "../../styles/mixins";
 
+.radioGroupLabel {
+  @include bravo;
+  color: var(--neutral-70);
+  padding-bottom: var(--spacer-three-xs);
+  transition: color var(--transition-regular);
+}
+
 .radio-button {
   @include bravo;
   display: flex;

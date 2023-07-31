@@ -30,6 +30,7 @@ type LabelProps = {
 export type GroupProps = {
   onChange?: (value: string) => void;
   value?: string;
+  label?: string
   children?: React.ReactNode;
   error?: {
     message: string
@@ -136,9 +137,14 @@ const Label: FC<LabelProps> = ({
   );
 };
 
-const RadioGroup: FC<GroupProps> = ({ onChange, value, children, error}) => {
+const RadioGroup: FC<GroupProps> = ({ onChange, value, children, error, label}) => {
   return (
     <RadioContext.Provider value={{ onChange, value }}>
+      {label && (
+        <label className={csx('radio-group__label', styles.radioGroupLabel, styles.error)}>
+          {label}
+        </label>
+      )}
       {children}
       {error && (
         <div
