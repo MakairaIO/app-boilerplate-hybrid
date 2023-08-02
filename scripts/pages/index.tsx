@@ -12,10 +12,10 @@ import {
   Button,
 } from '@/components'
 import useMakairaApp from '@/makaira/useMakairaApp'
-import { withMakaira } from '@/makaira/withMakaira'
 import type { ProductFeed } from '@/makaira/MakairaClient'
 
 import styles from '@/styles/HomePage.module.scss'
+import { withMakaira } from '@/makaira/withMakaira'
 
 export default function Home() {
   const { token, client: makairaClient } = useMakairaApp()
@@ -26,9 +26,9 @@ export default function Home() {
     enabled: !!token,
   })
 
-  // if (!token || isLoading) {
-  //   return <LoadingScreen />
-  // }
+  if (!token || isLoading) {
+    return <LoadingScreen />
+  }
 
   return (
     <PageWrapper title="Welcome to your Makaira App">
@@ -76,4 +76,4 @@ export default function Home() {
   )
 }
 
-// export const getServerSideProps = withMakaira()
+export const getServerSideProps = withMakaira()
