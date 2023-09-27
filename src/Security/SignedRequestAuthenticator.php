@@ -69,7 +69,7 @@ class SignedRequestAuthenticator extends AbstractAuthenticator
 
         $expected = hash_hmac(
             'sha256',
-            sprintf('%s:%s:%s', $nonce, $domain, $instance),
+            sprintf('%s:%s:%s:%s', $nonce, $domain, $instance, $hmac),
             $appInfo->getAppSecret()
         );
 
