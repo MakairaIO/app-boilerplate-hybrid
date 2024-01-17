@@ -20,6 +20,7 @@ Contains custom authenticator for authorizing requests based on an HMAC as query
 2. To start the local server with https, use ngrok: `ngrok http 8000`
 3. Run `npm install` to install packages for nextjs
 4. Run `npm run dev` to start develope with Frontend
+5. Provide `NEXT_PUBLIC_LOCAL_MAKAIRA_USER_TOKEN` env if you want to fetch data from Makaira Admin
 
 ### Use database for multi-tenant
 
