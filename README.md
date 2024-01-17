@@ -33,7 +33,7 @@ Contains custom authenticator for authorizing requests based on an HMAC as query
 insert into app_info(makaira_domain, makaira_instance, app_slug, app_secret, app_config) value("demo.makaira.io", "storefront", "app-boilerplate", "e8d4e7defffc2055ab5646b0ad724960", NULL);
 ```
 7. Start Local development
-8. You can access with url: http://localhost:8000/?hmac=a6cb894d51b1d33bf8376d2d9455436ec9739acaa79ccf94c720decd9c47c217&nonce=123456&domain=demo.makaira.io&instance=storefront
+8. You can access with url: http://localhost:3000/?hmac=a6cb894d51b1d33bf8376d2d9455436ec9739acaa79ccf94c720decd9c47c217&nonce=123456&domain=demo.makaira.io&instance=storefront&appType=app&slug=123
 
 ### Development Note
 - In local development, all `/api/*` request will be re-write the origin via `LOCAL_API_URL=http://localhost:8000` env
