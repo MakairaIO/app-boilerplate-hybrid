@@ -21,7 +21,7 @@ class MakairaClient {
     this.instance = instance
   }
 
-  async fetch<ResponseData>(path: string, method: string = 'GET') {
+  async fetch<ResponseData>(path: string, method: string = 'GET', options: RequestInit = {}) {
     if (!this.instance) {
       throw new Error('instance is undefined')
     }
@@ -34,9 +34,14 @@ class MakairaClient {
     headers.append('x-makaira-instance', this.instance)
     headers.append('Authorization', `Bearer ${this.token}`)
 
+    if (!this.token && process.env.NODE_ENV === 'development' && process.env.NEXT_PUBLIC_LOCAL_MAKAIRA_USER_TOKEN) {
+      headers.append('Authorization', `Bearer ${process.env.NEXT_PUBLIC_LOCAL_MAKAIRA_USER_TOKEN}`)
+    }
+
     const response = await fetch(url, {
       method,
       headers,
+      ...options
     })
 
     if (response.status !== 200) {

@@ -1,6 +1,5 @@
 import {
   FaArrowLeft,
-  FaChevronDown,
   FaTools,
   FaRegArrowAltCircleDown,
   FaRegArrowAltCircleLeft,
@@ -16,7 +15,6 @@ import { TfiAngleDown } from 'react-icons/tfi'
 
 import {
   PageWrapper,
-  Link,
   Button,
   Dropdown,
   Menu,
@@ -51,6 +49,7 @@ import {
   ShadowScroll,
   TextInput,
   ActionLayer,
+  LoadingScreen,
 } from '@/components'
 import React, { useState } from 'react'
 import { withMakaira } from '@/makaira/withMakaira'
@@ -68,9 +67,21 @@ export default function Example() {
   })
   const [open, setOpen] = useState(false)
   const [showActionLayer, setShowActionLayer] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   const onChange = (key: React.Key | React.Key[]) => {
     setValue(`${key}`)
+  }
+
+  const onShowLoading = () => {
+    setLoading(true)
+    setTimeout(() => {
+      setLoading(false)
+    }, 3000);
+  }
+
+  if (loading) {
+    return <LoadingScreen />
   }
 
   return (
@@ -844,6 +855,13 @@ export default function Example() {
       >
       <ActionLayer show={showActionLayer}/>
       <Button onClick={() => setShowActionLayer(p => !p)}>Toggle Action Layer</Button>
+      </PageWrapper>
+      <PageWrapper
+        title="Loading Screen"
+        prefix="You are looking at"
+        suffix="from Makaira library"
+      >
+        <Button onClick={onShowLoading}>Toggle Loading Screen</Button>
       </PageWrapper>
     </>
   )

@@ -70,8 +70,7 @@ const MakairaConfigProvider: React.FC<MakairaConfigProviderProps> = ({ children 
   const {
     domain,
     instance,
-    token,
-    client,
+    token
   } = useMakairaApp()
   const [config, setConfig] = useState<MakairaConfig>(INIT_CONFIG)
   const [availableLanguages, setAvailableLanguages] = useState<string[]>([])
@@ -79,44 +78,60 @@ const MakairaConfigProvider: React.FC<MakairaConfigProviderProps> = ({ children 
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    fetchSettings()
-  }, [domain, instance, token])
+    if (domain && instance && token && !ready) {
+      fetchSettings()
+    }
+  }, [domain, instance, token, ready])
 
   async function fetchSettings() {
-    if (domain && instance && token) {
-      try {
-        setReady(false)
-        setLoading(true)
-        await Promise.all([
-          fetchAvailableLanguages(),
-          fetchConfig(),
-        ])
-        setReady(true)
-      } catch (error) {
-        console.debug(error)
-      } finally {
-        setLoading(false)
-      }
+    try {
+      setReady(false)
+      setLoading(true)
+      await Promise.all([
+        fetchAvailableLanguages(),
+        fetchConfig(),
+      ])
+      setReady(true)
+    } catch (error) {
+      console.debug(error)
+    } finally {
+      setLoading(false)
     }
   }
 
   async function fetchAvailableLanguages() {
-    try {
-      const languages = await client.fetch<string[]>('languages', 'GET')
+    const headers = new Headers()
+    headers.append('x-makaira-instance', instance || '')
+    headers.append('Authorization', `Bearer ${token}`)
+
+    let response = await fetch(
+      `https://${domain}/languages`,
+      {
+        method: 'GET',
+        headers: headers
+      }
+    )
+    if (response.ok) {
+      const languages = await response.json()
       setAvailableLanguages(languages)
-    } catch (error) {
-      console.debug('[Example-App] fetch instance language fail', error)
     }
   }
 
   async function fetchConfig() {
-    try {
-      const makairaConfig = await client.fetch<MakairaConfig>('enterprise/config', 'GET')
-      if (makairaConfig) {
-        setConfig(makairaConfig)
+    const headers = new Headers()
+    headers.append('x-makaira-instance', instance || '')
+    headers.append('Authorization', `Bearer ${token}`)
+
+    let makairaConfig = await fetch(
+      `https://${domain}/enterprise/config`,
+      {
+        method: 'GET',
+        headers: headers
       }
-    } catch (error) {
-      console.debug('[Example-App] fetch instance config fail', error)
+    )
+    if (makairaConfig.ok) {
+      const response = await makairaConfig.json()
+      setConfig(response)
     }
   }
 
