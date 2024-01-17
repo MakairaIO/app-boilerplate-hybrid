@@ -6,6 +6,9 @@
 parameters:
     CLIENT_SECRET: '%env(resolve:CLIENT_SECRET)%'
     SHARED_SECRET: '%env(resolve:MAKAIRA_SHARED_SECRET)%'
+    MAKAIRA_APP_SECRET_CONTENT_WIDGET: '%env(resolve:MAKAIRA_APP_SECRET_CONTENT_WIDGET)%'
+    MAKAIRA_APP_SECRET_CONTENT_MODAL: '%env(resolve:MAKAIRA_APP_SECRET_CONTENT_MODAL)%'
+    MAKAIRA_APP_SECRET: '%env(resolve:MAKAIRA_APP_SECRET)%'
 
 services:
     # default configuration for services in *this* file

@@ -1,6 +1,11 @@
 /** @type {import('next').NextConfig} */
 
-require('dotenv').config({ path: '.env' })
+const dotenv = require('dotenv')
+dotenv.config({ path: '.env' })
+
+if (process.env.NODE_ENV === 'development') {
+  dotenv.config({ path: '.env.local', override: true })
+}
 
 const nextConfig = {
   reactStrictMode: true,

@@ -21,7 +21,7 @@ class MakairaClient {
     this.instance = instance
   }
 
-  async fetch<ResponseData>(path: string, method: string = 'GET') {
+  async fetch<ResponseData>(path: string, method: string = 'GET', options: RequestInit = {}) {
     if (!this.instance) {
       throw new Error('instance is undefined')
     }
@@ -37,6 +37,7 @@ class MakairaClient {
     const response = await fetch(url, {
       method,
       headers,
+      ...options
     })
 
     if (response.status !== 200) {

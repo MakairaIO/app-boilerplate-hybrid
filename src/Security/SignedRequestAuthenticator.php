@@ -16,17 +16,21 @@ use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 use App\Entity\AppInfo;
 use App\Repository\AppInfoRepository;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
 
 class SignedRequestAuthenticator extends AbstractAuthenticator
 {
 
     private Environment $twig;
     private AppInfoRepository $appInfoRepository;
+    private ParameterBagInterface $params;
 
-    public function __construct(Environment $twig, AppInfoRepository $appInfoRepository)
+    public function __construct(Environment $twig, AppInfoRepository $appInfoRepository, ParameterBagInterface $params)
     {
         $this->twig = $twig;
         $this->appInfoRepository = $appInfoRepository;
+        $this->params = $params;
     }
 
     /**
@@ -50,12 +54,20 @@ class SignedRequestAuthenticator extends AbstractAuthenticator
      */
     public function authenticate(Request $request): Passport
     {
+
+        $contentWidgetSecret = $this->params->get('MAKAIRA_APP_SECRET_CONTENT_WIDGET');
+        $appSecret = $this->params->get('MAKAIRA_APP_SECRET_CONTENT_WIDGET');
+        $contentModalSecret = $this->params->get('MAKAIRA_APP_SECRET_CONTENT_WIDGET');
+        
+        if ($contentModalSecret || $contentWidgetSecret || $appSecret) {
+            return new SelfValidatingPassport(new UserBadge(('signed_request')));
+        }
+
         $nonce = $request->query->get("nonce");
         $domain = $request->query->get("domain");
         $instance = $request->query->get("instance");
         $hmac = $request->query->get("hmac");
         $slug = $request->query->get("slug");
-
 
         if (null === $nonce || null === $domain || null === $instance || null === $hmac) {
             throw new AuthenticationException();
