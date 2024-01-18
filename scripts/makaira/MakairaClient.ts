@@ -21,7 +21,7 @@ class MakairaClient {
     this.instance = instance
   }
 
-  async fetch<ResponseData>(path: string, method: string = 'GET', options: RequestInit = {}) {
+  async fetch(path: string, options: RequestInit = {}) {
     if (!this.instance) {
       throw new Error('instance is undefined')
     }
@@ -34,24 +34,18 @@ class MakairaClient {
     headers.append('x-makaira-instance', this.instance)
     headers.append('Authorization', `Bearer ${this.token}`)
 
-    if (!this.token && process.env.NODE_ENV === 'development' && process.env.NEXT_PUBLIC_LOCAL_MAKAIRA_USER_TOKEN) {
-      headers.append('Authorization', `Bearer ${process.env.NEXT_PUBLIC_LOCAL_MAKAIRA_USER_TOKEN}`)
+    if (!this.token && process.env.NODE_ENV === 'development' && process.env.NEXT_PUBLIC_DEV_TOKEN) {
+      headers.append('Authorization', `Bearer ${process.env.NEXT_PUBLIC_DEV_TOKEN}`)
     }
 
-    const response = await fetch(url, {
-      method,
+    return fetch(url, {
       headers,
       ...options
     })
-
-    if (response.status !== 200) {
-      throw new Error('Response failed')
-    }
-
-    return (await response.json()) as Promise<ResponseData>
+  
   }
 
-  async fetchFeeds(): Promise<ProductFeed[]> {
+  async fetchFeeds() {
     const searchParams = new URLSearchParams()
 
     searchParams.append('_start', '0')
@@ -59,7 +53,7 @@ class MakairaClient {
     searchParams.append('_sort', 'changed')
     searchParams.append('_order', 'desc')
 
-    return this.fetch<ProductFeed[]>(`productfeed?${searchParams.toString()}`)
+    return this.fetch(`productfeed?${searchParams.toString()}`)
   }
 }
 

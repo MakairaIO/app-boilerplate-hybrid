@@ -77,7 +77,7 @@ const MakairaAppProvider: React.FC<MakairaAppProviderProps> = ({
   appType = 'app',
   slug,
 }) => {
-  const [token, setToken] = useState<string>()
+  const [token, setToken] = useState<string>('')
   const client = useRef<MakairaClient>(new MakairaClient())
   const [messages, setMessages] = useState<MakairaAppMessage[]>([])
   const messageListeners = useRef<MessageListener[]>([])
@@ -132,7 +132,8 @@ const MakairaAppProvider: React.FC<MakairaAppProviderProps> = ({
   useEffect(() => {
     client.current.setInstance(instance)
     client.current.setDomain(domain)
-  }, [instance, domain])
+    client.current.setToken(token)
+  }, [instance, domain, token])
 
   useEffect(() => {
     window.addEventListener('message', handleMessage)
@@ -147,7 +148,7 @@ const MakairaAppProvider: React.FC<MakairaAppProviderProps> = ({
       console.debug(
         '[Example-App] Skipping Auth-Request because app runs in dev-mode and query parameters are undefined'
       )
-      setToken(process.env.NEXT_PUBLIC_DEV_TOKEN)
+      setToken(process.env.NEXT_PUBLIC_DEV_TOKEN || '')
       client.current.setToken(process.env.NEXT_PUBLIC_DEV_TOKEN ?? '')
     } else if (!token && slug && appType && hmac && nonce && makairaHmac) {
       console.debug('[Example-App] Request Auth-Token from Makaira-Admin-UI')

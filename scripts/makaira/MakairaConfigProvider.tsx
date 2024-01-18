@@ -23,6 +23,7 @@ export interface MakairaConfig {
   defaultLanguage?: string
   environment?: string
   availableLanguages: string[]
+  language?: string
 }
 
 type WithState<T> = T & {
@@ -56,6 +57,7 @@ const INIT_CONFIG = {
   defaultLanguage: undefined,
   environment: undefined,
   availableLanguages: [],
+  language: undefined
 }
 
 const MakairaConfigContext = createContext<WithFuncs<WithState<MakairaConfig>>>({
@@ -70,10 +72,12 @@ const MakairaConfigProvider: React.FC<MakairaConfigProviderProps> = ({ children 
   const {
     domain,
     instance,
-    token
+    token,
+    client,
   } = useMakairaApp()
   const [config, setConfig] = useState<MakairaConfig>(INIT_CONFIG)
   const [availableLanguages, setAvailableLanguages] = useState<string[]>([])
+  const [language, setLanguage] = useState<string>();
   const [ready, setReady] = useState(false)
   const [loading, setLoading] = useState(true)
 
@@ -81,7 +85,7 @@ const MakairaConfigProvider: React.FC<MakairaConfigProviderProps> = ({ children 
     if (domain && instance && token && !ready) {
       fetchSettings()
     }
-  }, [domain, instance, token, ready])
+  }, [domain, instance, token, ready, client])
 
   async function fetchSettings() {
     try {
@@ -100,35 +104,18 @@ const MakairaConfigProvider: React.FC<MakairaConfigProviderProps> = ({ children 
   }
 
   async function fetchAvailableLanguages() {
-    const headers = new Headers()
-    headers.append('x-makaira-instance', instance || '')
-    headers.append('Authorization', `Bearer ${token}`)
-
-    let response = await fetch(
-      `https://${domain}/languages`,
-      {
-        method: 'GET',
-        headers: headers
-      }
-    )
+    let response = await client.fetch('languages')
     if (response.ok) {
       const languages = await response.json()
+      if (Array.isArray(languages) && languages.length > 0) {
+        setLanguage(languages[0])
+      }
       setAvailableLanguages(languages)
     }
   }
 
   async function fetchConfig() {
-    const headers = new Headers()
-    headers.append('x-makaira-instance', instance || '')
-    headers.append('Authorization', `Bearer ${token}`)
-
-    let makairaConfig = await fetch(
-      `https://${domain}/enterprise/config`,
-      {
-        method: 'GET',
-        headers: headers
-      }
-    )
+    let makairaConfig = await client.fetch('enterprise/config')
     if (makairaConfig.ok) {
       const response = await makairaConfig.json()
       setConfig(response)
@@ -248,6 +235,7 @@ const MakairaConfigProvider: React.FC<MakairaConfigProviderProps> = ({ children 
       value={{
         ...config,
         availableLanguages,
+        language,
         loading,
         ready,
         getImageLink,
