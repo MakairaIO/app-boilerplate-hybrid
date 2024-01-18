@@ -125,7 +125,7 @@ export function File(props: FileProps) {
       if (storageType === 's3' && files) {
         const data = new FormData()
         data.append('file', files[0])
-        const response: any = await client.fetch('upload', 'POST', { body: data })
+        const response: any = await client.fetch('upload', { method: 'POST', body: data })
         if (response && response.url) {
           onChange(response)
         }
