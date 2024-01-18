@@ -20,6 +20,9 @@ const nextConfig = {
         destination: (process.env.LOCAL_API_URL || '') + '/api/:path*' // Proxy to Backend
       }
     ]
+  },
+  images: {
+    domains: ['localhost']
   }
 }
 
