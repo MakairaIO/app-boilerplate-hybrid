@@ -76,30 +76,30 @@ a {
   font-display: fallback;
   font-family: 'FuturaBT';
   font-weight: 100;
-  src: url('../fonts/FuturaBT-Light/font.woff2') format('woff2'),
-    url('../fonts/FuturaBT-Light/font.woff') format('woff');
+  src: url('/fonts/FuturaBT-Light/font.woff2') format('woff2'),
+    url('/fonts/FuturaBT-Light/font.woff') format('woff');
 }
 
 @font-face {
   font-display: fallback;
   font-family: 'FuturaBT';
   font-weight: 300;
-  src: url('../fonts/FuturaBT-Book/font.woff2') format('woff2'),
-    url('../fonts/FuturaBT-Book/font.woff') format('woff');
+  src: url('/fonts/FuturaBT-Book/font.woff2') format('woff2'),
+    url('/fonts/FuturaBT-Book/font.woff') format('woff');
 }
 
 @font-face {
   font-display: fallback;
   font-family: 'FuturaBT';
   font-weight: 400;
-  src: url('../fonts/FuturaBT-Medium/font.woff2') format('woff2'),
-    url('../fonts/FuturaBT-Medium/font.woff') format('woff');
+  src: url('/fonts/FuturaBT-Medium/font.woff2') format('woff2'),
+    url('/fonts/FuturaBT-Medium/font.woff') format('woff');
 }
 
 @font-face {
   font-display: fallback;
   font-family: 'FuturaBT';
   font-weight: 900;
-  src: url('../fonts/FuturaBT-Heavy/font.woff2') format('woff2'),
-    url('../fonts/FuturaBT-Heavy/font.woff') format('woff');
+  src: url('/fonts/FuturaBT-Heavy/font.woff2') format('woff2'),
+    url('/fonts/FuturaBT-Heavy/font.woff') format('woff');
 }
