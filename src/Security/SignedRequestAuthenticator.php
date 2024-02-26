@@ -54,15 +54,6 @@ class SignedRequestAuthenticator extends AbstractAuthenticator
      */
     public function authenticate(Request $request): Passport
     {
-
-        $contentWidgetSecret = $this->params->get('MAKAIRA_APP_SECRET_CONTENT_WIDGET');
-        $appSecret = $this->params->get('MAKAIRA_APP_SECRET_CONTENT_WIDGET');
-        $contentModalSecret = $this->params->get('MAKAIRA_APP_SECRET_CONTENT_WIDGET');
-        
-        if ($contentModalSecret || $contentWidgetSecret || $appSecret) {
-            return new SelfValidatingPassport(new UserBadge(('signed_request')));
-        }
-
         $nonce = $request->query->get("nonce");
         $domain = $request->query->get("domain");
         $instance = $request->query->get("instance");
