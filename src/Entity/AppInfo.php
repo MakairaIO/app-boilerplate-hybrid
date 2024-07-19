@@ -25,6 +25,12 @@ class AppInfo
     #[ORM\Column(length: 255, nullable: false)]
     private string $appSecret = '';
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $appWidgetSlug = '';
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $appWidgetSecret = '';
+
     public function getId(): ?int
     {
         return $this->id;
@@ -76,6 +82,42 @@ class AppInfo
         $this->appSecret = $appSecret;
 
         return $this;
+    }
+
+    public function setAppWidgetSecret(string $appWidgetSecret): self
+    {
+        $this->appWidgetSecret = $appWidgetSecret;
+
+        return $this;
+    }
+
+    public function getAppWidgetSecret(): ?string
+    {
+        return $this->appWidgetSecret;
+    }
+
+     /**
+     * return right secret base on appType
+     * @return string | null
+     */
+    public function getSecret(string $appType = 'app'): ?string {
+        if ($appType === 'content-widget') {
+            return $this->appWidgetSecret;
+        }
+
+        return $this->appSecret;
+    }
+
+    public function setAppWidgetSlug(string $appWidgetSlug = ''): self
+    {
+        $this->appWidgetSlug = $appWidgetSlug;
+
+        return $this;
+    }
+
+    public function getAppWidgetSlug(): ?string
+    {
+        return $this->appWidgetSlug;
     }
 
     public function getSubDomain(): ?string

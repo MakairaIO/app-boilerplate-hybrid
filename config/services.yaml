@@ -9,6 +9,8 @@ parameters:
     MAKAIRA_APP_SECRET_CONTENT_WIDGET: '%env(resolve:MAKAIRA_APP_SECRET_CONTENT_WIDGET)%'
     MAKAIRA_APP_SECRET_CONTENT_MODAL: '%env(resolve:MAKAIRA_APP_SECRET_CONTENT_MODAL)%'
     MAKAIRA_APP_SECRET: '%env(resolve:MAKAIRA_APP_SECRET)%'
+    APP_STORE_URL: '%env(resolve:APP_STORE_URL)%'
+    APP_STORE_SECRET: '%env(resolve:APP_STORE_SECRET)%'
 
 services:
     # default configuration for services in *this* file
@@ -20,6 +22,7 @@ services:
             $appUrl: '%env(resolve:APP_URL)%'
             $billingToken: '%env(resolve:BILLING_TOKEN)%'
             $appName: '%env(resolve:APP_NAME)%'
+            $appSecret: '%env(resolve:APP_SECRET)%'
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
@@ -40,6 +43,11 @@ services:
         arguments:
             $aggregate: '@Makaira\HttpClient\Curl'
             $sharedSecret: '%SHARED_SECRET%'
+
+    App\Security\MakairaAppAuthenticator:
+        arguments:
+            $appStoreUrl: '%APP_STORE_URL%'
+            $appStoreSecret: '%APP_STORE_SECRET%'
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
