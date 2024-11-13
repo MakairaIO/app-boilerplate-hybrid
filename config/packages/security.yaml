@@ -12,6 +12,12 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
+        # external-install:
+        #     pattern: ^/api/app-external-install
+        #     security: true
+        #     custom_authenticators:
+        #         - App\Security\MakairaAppAuthenticator
+
         main:
             security: true
             stateless: true

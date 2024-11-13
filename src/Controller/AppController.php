@@ -2,8 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\AppInfo;
+use App\Repository\AppInfoRepository;
 use App\Service\CommunicationService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
@@ -116,4 +119,36 @@ class AppController extends AbstractController
             'pageTitle' => $pageTitle,
         ]);
     }
+
+    // #[Route('/api/app-external-install', name: 'app_external_install')]
+    // public function externalInstall(
+    //     Request $request,
+    //     AppInfoRepository $appInfoRepository,
+    // ): JsonResponse
+    // {
+    //     $body = json_decode($request->getContent(), false, 512, JSON_THROW_ON_ERROR);
+    //     $domain = $body->domain;
+    //     $clientSecret = $body->clientSecret;
+    //     $instance = $body->instance;
+    //     $slug = $body->slug;
+    //     $widgetSlug = $body->widgetSlug ?? '';
+    //     $widgetSecret = $body->widgetSecret ?? '';
+
+    //     $appInfo = $appInfoRepository->findOneByAppInfo($domain, $instance, $slug);
+    //     if ($appInfo === null) {
+    //         $appInfo = new AppInfo();
+    //         $appInfo->setMakairaDomain($domain)
+    //             ->setMakairaInstance($instance)
+    //             ->setAppSlug($slug)
+    //             ->setAppSecret($clientSecret)
+    //             ->setAppWidgetSlug($widgetSlug)
+    //             ->setAppWidgetSecret(($widgetSecret));
+
+    //         $appInfoRepository->save($appInfo, true);
+    //     }
+
+    //     return new JsonResponse([
+    //         'message' => 'success',
+    //     ]);
+    // }
 }
